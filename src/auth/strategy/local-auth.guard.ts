@@ -8,14 +8,17 @@ import errors from 'src/errors';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super();
+    super({ usernameField: 'email' });
   }
 
   async validate(
-    username: string,
+    email: string,
     password: string,
   ): Promise<Omit<User, 'password'>> {
-    const user = await this.authService.validateUser(username, password);
+    console.log('email', email);
+    console.log('password', password);
+
+    const user = await this.authService.validateUser(email, password);
     if (!user) {
       throw new UnauthorizedException(
         errors.ERROR_USER_NAME_OR_PASSWORD_NOT_CORRECT.message,

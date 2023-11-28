@@ -3,13 +3,13 @@ import {
   Controller,
   Get,
   Post,
-  Request,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AuthService } from './auth.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import JwtAuthGuard from './strategy/jwt-auth.guard';
 import LocalAuthGuard from './strategy/local.strategy';
 
@@ -25,13 +25,15 @@ export class AuthController {
         message: e,
       };
     });
+    console.log(createdUser);
 
     if ('error' in createdUser)
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
+        message: createdUser.message,
       });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       user: createdUser,
     });
@@ -39,7 +41,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
+  async login(@Req() req) {
     return this.authService.login(req.user);
   }
 
@@ -51,7 +53,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
+  getProfile(@Req() req: Request) {
     return req.user;
   }
 }
