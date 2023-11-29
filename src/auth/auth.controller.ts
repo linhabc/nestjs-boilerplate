@@ -2,23 +2,25 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Post,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
-import JwtAuthGuard from './strategy/jwt-auth.guard';
-import LocalAuthGuard from './strategy/local.strategy';
+import { Request } from 'express';
+import LocalAuthGuard from './guard/local-auth.guard';
+import { Public } from 'src/decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('signUp')
-  async signUp(@Body() body: Prisma.UserCreateInput, @Res() res: Response) {
+  async signUp(@Body() body: Prisma.UserCreateInput) {
     const createdUser = await this.authService.signUp(body).catch((e) => {
       return {
         error: true,
@@ -28,17 +30,15 @@ export class AuthController {
     console.log(createdUser);
 
     if ('error' in createdUser)
-      return res.status(400).json({
-        success: false,
-        message: createdUser.message,
-      });
+      throw new HttpException(createdUser.message, HttpStatus.BAD_REQUEST);
 
-    return res.status(200).json({
+    return {
       success: true,
       user: createdUser,
-    });
+    };
   }
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req) {
@@ -51,7 +51,6 @@ export class AuthController {
   @Post('changePassword')
   async changePassword() {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Req() req: Request) {
     return req.user;
