@@ -17,7 +17,7 @@ import { LocalStrategy } from './guard/local.strategy';
     JwtModule.register({
       global: true,
       secret: configs.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1h' },
     }),
   ],
 })

@@ -5,8 +5,9 @@ CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "name" TEXT,
-    "role" "Role" NOT NULL DEFAULT 'USER',
+    "roles" "Role"[] DEFAULT ARRAY['USER']::"Role"[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

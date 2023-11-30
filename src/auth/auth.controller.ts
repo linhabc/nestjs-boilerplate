@@ -9,10 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { AuthService } from './auth.service';
 import { Request } from 'express';
-import LocalAuthGuard from './guard/local-auth.guard';
 import { Public } from 'src/decorator';
+import { AuthService } from './auth.service';
+import LocalAuthGuard from './guard/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
