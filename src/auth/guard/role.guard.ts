@@ -31,7 +31,7 @@ export class RolesGuard implements CanActivate {
 
   matchRoles(roles: string[], userRole: string[]): boolean {
     if (!roles.includes(Role.ADMIN)) return true;
-    if (!userRole.includes[Role.ADMIN])
+    if (!userRole.includes(Role.ADMIN))
       throw new UnauthorizedException(
         'Need Admin role to perform action on this resource',
       );
