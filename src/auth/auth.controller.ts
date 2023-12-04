@@ -8,9 +8,9 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { Request } from 'express';
 import { Public } from 'src/decorator';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import LocalAuthGuard from './guard/local-auth.guard';
 
@@ -20,7 +20,7 @@ export class AuthController {
 
   @Public()
   @Post('signUp')
-  async signUp(@Body() body: Prisma.UserCreateInput) {
+  async signUp(@Body() body: CreateUserDto) {
     const createdUser = await this.authService.signUp(body).catch((e) => {
       return {
         error: true,

@@ -17,18 +17,6 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
 ## Prisma
 ```bash
 $ npx prisma migrate
@@ -41,3 +29,8 @@ $ docker build -t nestjs-demo .
 $ docker run -d -t -p 3000:3000 --env-file .env nest-prisma-server
 ```
 
+# Nestjs flow
+- https://docs.nestjs.com/faq/request-lifecycle
+- middleware -> guards -> interceptors-> pipes -> **handler** -> interceptors 
+
+# Template Components

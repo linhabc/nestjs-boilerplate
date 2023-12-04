@@ -3,11 +3,12 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
-import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import errors from 'src/errors';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
   ) {}
   bcryptSaltRounds = 10;
 
-  async signUp(data: Prisma.UserCreateInput) {
+  async signUp(data: CreateUserDto) {
     const { password } = data;
     const encryptedPass = await bcrypt.hash(password, this.bcryptSaltRounds);
     return await this.userService.create({ ...data, password: encryptedPass });
@@ -27,6 +28,7 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync({
         sub: user.id,
+        email: user.email,
         name: user.name,
         roles: user.roles,
       }),
