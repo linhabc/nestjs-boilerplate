@@ -18,7 +18,7 @@ export class CreateUserDto implements Prisma.UserCreateInput {
   @IsString()
   name?: string;
 
-  @IsEnum($Enums.Role)
+  @IsEnum($Enums.Role, { each: true })
   @ApiProperty({ default: [Role.USER] })
   roles?: $Enums.Role[] | Prisma.UserCreaterolesInput;
 }

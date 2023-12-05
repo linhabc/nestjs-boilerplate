@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { RolesGuard } from 'src/auth/guard/role.guard';
 import { Roles } from 'src/decorator';
@@ -16,7 +23,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.delete(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.delete(id);
   }
 }

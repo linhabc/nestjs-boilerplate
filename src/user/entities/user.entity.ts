@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Role, User } from '@prisma/client';
 
 export class UserEntity implements User {
-  id: number;
+  id: string;
   email: string;
   password: string;
   name: string;
