@@ -69,3 +69,11 @@ docker run -d -t -p 3000:3000 --env-file .env nest-prisma-server
 
 - <https://docs.nestjs.com/recipes/terminus>
 
+### Nest miscroservices
+
+- **Transporter** responsible for transmitting messages betwwen different microservice instances.
+- Built-in transporter: Redis, Mqtt, Nats, RabbitMQ, Kafka, Grpc
+
+#### Custom transporter
+
+- <https://dev.to/nestjs/integrate-nestjs-with-external-services-using-microservice-transporters-part-3-4m20>

@@ -4,6 +4,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import configs from './configs';
 import { LoggingInterceptor } from './logging/logging.interceptor';
 import { ValidationPipe } from '@nestjs/common';
+import { RmqOptions, Transport } from '@nestjs/microservices';
+import { InBoundMesageDeserializer } from './common/deserializer/rabbit.deserializer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,7 +22,24 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config); // /api
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(configs.PORT);
-  console.log('listen on port ', configs.PORT);
+  app.connectMicroservice<RmqOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [configs.RABITMQ_URL],
+      queue: 'create_order',
+      queueOptions: {
+        durable: true,
+      },
+      prefetchCount: 2,
+      noAck: false,
+      deserializer: new InBoundMesageDeserializer(),
+    },
+  });
+  await app.startAllMicroservices();
+
+  await app.listen(configs.PORT, () => {
+    console.log('listen on port ', configs.PORT);
+  });
 }
+
 bootstrap();

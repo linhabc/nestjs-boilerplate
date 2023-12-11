@@ -12,6 +12,13 @@ services:
       POSTGRES_PASSWORD: nestjsss
     volumes:
       - pgdata:/var/lib/postgresql/data
-
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=nestjs
+      - RABBITMQ_DEFAULT_PASS=nestjs
 volumes:
   pgdata:
