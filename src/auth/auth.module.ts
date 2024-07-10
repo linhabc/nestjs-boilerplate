@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import configs from 'src/configs';
+import environment from 'src/environment';
 import { JwtStrategy } from './guard/jwt.strategy';
 import { LocalStrategy } from './guard/local.strategy';
 
@@ -16,7 +16,7 @@ import { LocalStrategy } from './guard/local.strategy';
     PassportModule,
     JwtModule.register({
       global: true,
-      secret: configs.JWT_SECRET,
+      secret: environment().JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
   ],

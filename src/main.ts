@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import configs from './configs';
+import configs from './environment';
 import { LoggingInterceptor } from './logging/logging.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -20,7 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config); // /api
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(configs.PORT);
-  console.log('listen on port ', configs.PORT);
+  await app.listen(configs().PORT);
+  console.log('listen on port ', configs().PORT);
 }
 bootstrap();

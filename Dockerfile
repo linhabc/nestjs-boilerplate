@@ -1,23 +1,34 @@
-FROM node:16 AS builder
+FROM node:18-alpine as build
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY prisma ./prisma/
 
 RUN npm install
-
+# Bundle app source
 COPY . .
 
+RUN npx prisma generate
+
+# Creates a "dist" folder with the production build
 RUN npm run build
 
-FROM node:16
+FROM node:18-alpine as main
 
 WORKDIR /app
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
+# Bundle app source
+COPY --from=build /app/dist /app/dist
+# COPY --from=build /app/environment /app/environment
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/prisma /app/prisma 
+COPY --from=build /app/package.json /app/package.json
 
 EXPOSE 3000
-CMD [ "npm", "run", "start:prod" ]
+
+ENV NODE_ENV=production
+
+CMD npm run migrate:prod;node dist/main.js
+
+# When run, mount env file .production.env to /app/environment
+# docker run -v .production.env:/app/environment ${project-name}:${version}

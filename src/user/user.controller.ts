@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { RolesGuard } from 'src/auth/guard/role.guard';
-import { Roles } from 'src/decorator';
+import { Roles } from 'src/common/decorator';
 import { UserService } from './user.service';
 
 @Roles([Role.ADMIN])

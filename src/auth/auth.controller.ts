@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { Public } from 'src/decorator';
+import { Public } from 'src/common/decorator';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import LocalAuthGuard from './guard/local-auth.guard';
